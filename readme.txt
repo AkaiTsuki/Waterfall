@@ -1,0 +1,1 @@
+This is my waterfall jquery plugin. The waterfall plugin is to create a waterfall layout using absolute position. This plugin also add inifnity scroll and ajax features.
