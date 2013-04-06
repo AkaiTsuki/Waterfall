@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/waterfall.js"></script>
 	<title>Waterfall Layout: Absolute Position</title>
 </head>
 <style>
@@ -39,6 +40,7 @@
 </style>
 <script>
 $(function(){
+	/*
 	function waterfall(){
 		var waterfall=$('#waterfall');
 		var picList=$('.picList');
@@ -79,7 +81,7 @@ $(function(){
 				return i;
 		}
 	}
-
+	
 	window.onload=function(){
 		waterfall();
 	}
@@ -87,7 +89,7 @@ $(function(){
 	$(window).resize(function(){
 		waterfall();
 	});
-
+	*/
 	function loadImg(){
 		var json="js/json_load.js";
 		$.getJSON(json,function(data){
@@ -114,14 +116,16 @@ $(function(){
 		});
 		waterfall();
 	}
-
+	/*
 	$(window).scroll(function(){
 				var h=$(document).height()-$(window).height()
 				if($(document).scrollTop()>=h){
 					loadImg();
 				}
 			});
+	*/
 
+	$("#waterfall").jcWaterfall();
 });
 </script>
 <body>
