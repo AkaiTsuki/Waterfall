@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<title>Waterfall Layout: Absolute Position</title>
+</head>
+<style>
+	*{margin: 0;padding: 0;}
+	body{
+		background-color: #eeeeee;
+		background: url("images/shl.png");
+	}
+
+	header{
+		text-align: center;
+	}
+
+	#waterfall{
+		margin: 50px auto;
+		position: relative;
+		display: block;
+	}
+
+	.picList{
+		width: 200px;
+		padding: 10px;
+		background-color: white;
+		margin:0 6px 12px 6px;
+		box-shadow: 0 5px 3px #ccc;
+		position: absolute;
+		display: block;
+	}
+
+	.picList:hover{ box-shadow:1px 1px 5px #BBB;}
+	.picThumbnail{ border-bottom: 1px solid #eee;}
+	.picThumbnail a{display: block; max-height: 600px; overflow: hidden;}
+	.picThumbnail img{display: block;max-width: 200px;min-width: 200px;}
+</style>
+<script>
+$(function(){
+	function waterfall(){
+		var waterfall=$('#waterfall');
+		var picList=$('.picList');
+		var listWidth=picList.outerWidth(true);
+		var maxCol=Math.floor($(window).width()/listWidth);
+		var wfCol=new Array();
+
+		for (var i = 0; i < picList.length; i++) {
+			var currentList=picList.eq(i);
+			var colHeight=currentList.outerHeight(true);
+			if (i<maxCol) {
+				wfCol[i]=colHeight;
+				currentList.css('top', 0);
+				currentList.css('left', i*listWidth);
+			}else{
+				minHeight= Math.min.apply(null,wfCol);
+				minCol=getArrayIndex(wfCol,minHeight);
+				wfCol[minCol]+=colHeight;
+				
+				currentList.css('top', minHeight);
+				currentList.css('left', minCol*listWidth);
+			}
+			currentList.attr('id', 'waterfall-item-'+i);
+		};
+
+		var lastLayerTop=parseInt(picList.last().css('top'));
+		var lastLayerHeight=picList.last().outerHeight(true);
+		var waterfallHeight=lastLayerTop+lastLayerHeight;
+		waterfall.css({
+			width: listWidth*maxCol,
+			height: waterfallHeight
+		});
+	}
+
+	function getArrayIndex(s,v){
+		for(i in s){
+			if(s[i]==v)
+				return i;
+		}
+	}
+
+	window.onload=function(){
+		waterfall();
+	}
+
+	$(window).resize(function(){
+		waterfall();
+	});
+
+	function loadImg(){
+		var json="js/json_load.js";
+		$.getJSON(json,function(data){
+
+			$.each(data,function(i){
+				var url=data[i].url;
+				var desc=data[i].desc;
+				var author=data[i].author;
+				var height=parseInt(data[i].height);
+				if (height>600) {height=600;};
+
+				var html="<div class=\"picList\"><div class=\"picThumbnail\"><a href=\"\"><img src="+url+" alt=\"\"></a></div><div class=\"picDescription\"><p>"+desc+"</p><p>"+author+"</p></div></div>";
+				
+				var divWrapper=$('<div class=\"picList\">');
+				var thumb=$('<div class=\"picThumbnail\">').css('height', height);
+				var imgContent=$("<a href=\"\"><img src="+url+" alt=\"\"></a>");
+				var comment=$("<div class=\"picDescription\"><p>"+desc+"</p><p>"+author+"</p></div></div>");
+
+				thumb.append(imgContent).appendTo(divWrapper);
+				divWrapper.append(comment);
+				$('#waterfall').append(divWrapper);
+			
+			});
+		});
+		waterfall();
+	}
+
+	$(window).scroll(function(){
+				var h=$(document).height()-$(window).height()
+				if($(document).scrollTop()>=h){
+					loadImg();
+				}
+			});
+
+});
+</script>
+<body>
+	<header>
+		<h1>Image Waterfall</h1>
+	</header>
+	<div id="waterfall">
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/1.png" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/2.png" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img1.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img2.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img3.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img4.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img5.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img6.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img7.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/login-bg.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/1.png" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/2.png" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img1.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img2.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img3.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img4.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img5.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img6.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/img7.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+		<div class="picList">
+			<div class="picThumbnail">
+				<a href=""><img src="images/login-bg.jpg" alt=""></a>
+			</div>
+			<div class="picDescription">
+				<p>Image Description</p>
+				<p>Author Information</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

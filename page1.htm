@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Waterfall Experiment 1</title>
+	<style>
+	body{
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		background-color: #eeeeee;
+		
+	}
+
+	.container{
+		width: 920px;
+		margin:0 auto;
+	}
+
+	.waterColumn{
+		display: inline-block;
+		width: 23%;
+		margin-right: 1%;
+		vertical-align: top;
+	}
+
+	.wateritem{
+		width: 90%;
+		padding: 10px;
+		background-color: white;
+		margin-bottom: 10px;
+		box-shadow: 0 5px 3px #ccc;
+	}
+
+	.wateritem img{
+		max-width: 100%;
+		min-width: 100%;
+	}
+
+
+	</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script>
+
+		$(function(){
+			var imgList=new Array("images/1.png","images/2.png","images/login-bg.jpg","../images/3.jpg","images/4.jpg","images/5.jpg","images/6.jpg","images/7.jpg","images/8.jpg");
+			var comment=new Array("Lorem ipsum dolor sit amet.","Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro quos!","Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam ducimus asperiores non ad.");
+
+			loadData(10,imgList,comment);
+			
+			$(window).scroll(function(){
+				var h=$(document).height()-$(window).height()
+				if($(document).scrollTop()>=h){
+					loadData(10,imgList,comment);
+				}
+			});
+			
+			
+
+		});
+
+		function loadData(num,imgList,comment){
+			for (var i = num; i > 0; i--) {
+				var image=getImage(imgList);
+				var index=getLowestCol();
+				var column=$('.waterColumn').get(index);
+				
+				$('<div>').addClass('wateritem')
+							.append(image)
+							.append(getComment(comment))
+							.appendTo(column);	
+			};
+		}
+
+		function getLowestCol(){
+			var h=$('.waterColumn').height();
+			var i=0;
+			
+			$('.waterColumn').each(function(index) {
+				var ch=$(this).height();
+				if (ch<h) {
+					i=index;
+				}
+			});
+			return i;
+		}
+
+		function getImage(img){
+			var i=Math.floor(Math.random()*9);
+			var imageSrc=img[i];
+			var image=$('<img>').attr('src',imageSrc);
+			return image;
+		}
+
+		function getComment(cmt){
+			var i=Math.floor(Math.random()*3);
+			return cmt[i];
+		}
+
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="waterColumn">
+			<div class="wateritem">
+				<img src="../images/1.png" alt="">
+				<br>
+				Default Image
+			</div>
+			<div class="wateritem">
+				<img src="../images/2.png" alt="">
+				<br>
+				Default Image
+			</div>
+		</div>
+		<div class="waterColumn">
+			<div class="wateritem">
+				<img src="../images/2.png" alt="">
+				<br>
+				Default Image
+			</div>
+		</div>
+		<div class="waterColumn">
+			<div class="wateritem">
+				<img src="../images/login-bg.jpg" alt="">
+				<br>
+				Default Image
+			</div>
+		</div>
+		<div class="waterColumn"></div>
+	</div>
+</body>
+</html>
